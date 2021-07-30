@@ -1,5 +1,6 @@
 #include "SimpleNtuplizer.h"
 
+
 // Function that actually reads values from the AODSIM input file
 void SimpleNtuplizer::setSuperClusterVariables(
 					       const reco::SuperCluster& superCluster,
@@ -10,7 +11,7 @@ void SimpleNtuplizer::setSuperClusterVariables(
   using namespace std;
   using namespace edm;
   using namespace reco;
-
+  using namespace egammaTools;
   // Increase count of photons in event
   nClusters_++;
 
@@ -59,7 +60,7 @@ void SimpleNtuplizer::setSuperClusterVariables(
   seedEnergy_c = superCluster.seed()->energy();
   numberOfClusters_c = superCluster.clusters().size();
 
-  EcalClusterLocal ecalLocal;    
+  //EcalClusterLocal ecalLocal;    
 
   clusterRawEnergy_c.clear();
   clusterPhi_c.clear();
@@ -126,6 +127,8 @@ void SimpleNtuplizer::setSuperClusterVariables(
   clusterDPhiToSeed_c.push_back(reco::deltaPhi(cluster.phi(), superCluster.seed()->phi()));
   clusterDEtaToSeed_c.push_back(cluster.eta() - superCluster.seed()->eta());
 
+  edm::ESHandle<EcalNextToDeadChannel> dch = iSetup.getHandle(nextToDeadToken_);
+
   if (isEB_c) {
     EBDetId ebseedid(cluster.seed());
     // Position EB
@@ -143,11 +146,12 @@ void SimpleNtuplizer::setSuperClusterVariables(
     isEERingGap_c = 0;
 
     nrSaturatedCrysIn5x5_c = EcalClusterToolsT<false>::nrSaturatedCrysIn5x5(ebseedid, ecalRecHits.product(), topology_);
-    nextToDead_c = EcalTools::isNextToDead(ebseedid, iSetup) ? 1 : 0;
-      
+
+    nextToDead_c = EcalTools::isNextToDead(ebseedid, *dch) ? 1 : 0;
+
     Int_t iEta, iPhi;
     Float_t cryEta, cryPhi, dummy;
-    ecalLocal.localCoordsEB( cluster, iSetup,
+    egammaTools::localEcalClusterCoordsEB( cluster, *geometry_,
 			     cryEta, cryPhi, iEta, iPhi, dummy, dummy );
       
     iEtaCoordinate_c.push_back(iEta);
@@ -184,14 +188,14 @@ void SimpleNtuplizer::setSuperClusterVariables(
     isEERingGap_c = EEDetId::isNextToRingBoundary(eeseedid) ? 1 : 0;
 
     nrSaturatedCrysIn5x5_c = EcalClusterToolsT<false>::nrSaturatedCrysIn5x5(eeseedid, ecalRecHits.product(), topology_);
-    nextToDead_c = EcalTools::isNextToDead(eeseedid, iSetup) ? 1 : 0;
+    nextToDead_c = EcalTools::isNextToDead(eeseedid, *dch) ? 1 : 0;
 
     // Position EE
     iXSeed_c.push_back(eeseedid.ix());
     iYSeed_c.push_back(eeseedid.iy());
     Int_t iX, iY;
     Float_t cryX, cryY, dummy;
-    ecalLocal.localCoordsEE( cluster, iSetup,
+    egammaTools::localEcalClusterCoordsEE( cluster, *geometry_,
 			     cryX, cryY, iX, iY, dummy, dummy );
       
     iXCoordinate_c.push_back(iX);
@@ -212,7 +216,7 @@ void SimpleNtuplizer::setSuperClusterVariables(
   }
 
   // Showershape
-  std::vector<float> localCovariances = EcalClusterToolsT<false>::localCovariances(cluster, ecalRecHits.product(), topology_);
+  const auto&  localCovariances = EcalClusterToolsT<false>::localCovariances(cluster, ecalRecHits.product(), topology_);
   r9_c.push_back(EcalClusterToolsT<false>::e3x3(cluster, ecalRecHits.product(), topology_)/superCluster.rawEnergy());
   sigmaIetaIeta_c.push_back(sqrt(localCovariances[0]));
   sigmaIetaIphi_c.push_back(localCovariances[1]/sqrt(localCovariances[0]*localCovariances[2]));
@@ -231,7 +235,7 @@ void SimpleNtuplizer::setSuperClusterVariables(
   e2x5Left_c.push_back(EcalClusterToolsT<false>::e2x5Left(cluster, ecalRecHits.product(), topology_));
   e2x5Right_c.push_back(EcalClusterToolsT<false>::e2x5Right(cluster, ecalRecHits.product(), topology_));
 
-  std::vector<float> full5x5_localCovariances = EcalClusterToolsT<true>::localCovariances(cluster, ecalRecHits.product(), topology_);
+  const auto&  full5x5_localCovariances = EcalClusterToolsT<true>::localCovariances(cluster, ecalRecHits.product(), topology_);
   full5x5_r9_c.push_back(EcalClusterToolsT<true>::e3x3(cluster, ecalRecHits.product(), topology_)/superCluster.rawEnergy());
   full5x5_sigmaIetaIeta_c.push_back(sqrt(full5x5_localCovariances[0]));
   full5x5_sigmaIetaIphi_c.push_back(full5x5_localCovariances[1]/sqrt(full5x5_localCovariances[0]*full5x5_localCovariances[2]));
@@ -274,7 +278,7 @@ void SimpleNtuplizer::setSuperClusterVariables(
 
       Int_t iEta, iPhi;
       Float_t cryEta, cryPhi, dummy;
-      ecalLocal.localCoordsEB( cluster, iSetup,
+      egammaTools::localEcalClusterCoordsEB( cluster, *geometry_,
 			       cryEta, cryPhi, iEta, iPhi, dummy, dummy );
 
       iEtaCoordinate_c.push_back(iEta);
@@ -304,7 +308,7 @@ void SimpleNtuplizer::setSuperClusterVariables(
       iYSeed_c.push_back(eeseedid.iy());
       Int_t iX, iY;
       Float_t cryX, cryY, dummy;
-      ecalLocal.localCoordsEE( cluster, iSetup,
+      egammaTools::localEcalClusterCoordsEE( cluster, *geometry_,
 			       cryX, cryY, iX, iY, dummy, dummy );
 	
       iXCoordinate_c.push_back(iX);
@@ -326,7 +330,7 @@ void SimpleNtuplizer::setSuperClusterVariables(
 
     // Containement
     // Showershape
-    std::vector<float> localCovariances = EcalClusterToolsT<false>::localCovariances(cluster, ecalRecHits.product(), topology_);
+    const auto&  localCovariances = EcalClusterToolsT<false>::localCovariances(cluster, ecalRecHits.product(), topology_);
     r9_c.push_back(EcalClusterToolsT<false>::e3x3(cluster, ecalRecHits.product(), topology_)/superCluster.rawEnergy());
     sigmaIetaIeta_c.push_back(sqrt(localCovariances[0]));
     sigmaIetaIphi_c.push_back(localCovariances[1]/sqrt(localCovariances[0]*localCovariances[2]));
@@ -345,7 +349,7 @@ void SimpleNtuplizer::setSuperClusterVariables(
     e2x5Left_c.push_back(EcalClusterToolsT<false>::e2x5Left(cluster, ecalRecHits.product(), topology_));
     e2x5Right_c.push_back(EcalClusterToolsT<false>::e2x5Right(cluster, ecalRecHits.product(), topology_));
 
-    std::vector<float> full5x5_localCovariances = EcalClusterToolsT<true>::localCovariances(cluster, ecalRecHits.product(), topology_);
+    const auto&  full5x5_localCovariances = EcalClusterToolsT<true>::localCovariances(cluster, ecalRecHits.product(), topology_);
     full5x5_r9_c.push_back(EcalClusterToolsT<true>::e3x3(cluster, ecalRecHits.product(), topology_)/superCluster.rawEnergy());
     full5x5_sigmaIetaIeta_c.push_back(sqrt(full5x5_localCovariances[0]));
     full5x5_sigmaIetaIphi_c.push_back(full5x5_localCovariances[1]/sqrt(full5x5_localCovariances[0]*full5x5_localCovariances[2]));

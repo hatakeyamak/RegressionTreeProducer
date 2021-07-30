@@ -54,6 +54,10 @@ SimpleNtuplizer::SimpleNtuplizer(const edm::ParameterSet& iConfig):
   ebSrFlagToken_(consumes<EBSrFlagCollection>(iConfig.getParameter<edm::InputTag>("ebSrFlagCollection"))),
   eeSrFlagToken_(consumes<EESrFlagCollection>(iConfig.getParameter<edm::InputTag>("eeSrFlagCollection")))
 {
+
+    nextToDeadToken_ = esConsumes<EcalNextToDeadChannel, EcalNextToDeadChannelRcd>();
+    
+
   doElectronTree = iConfig.getParameter<bool>("doElectronTree");
   doPhotonTree = iConfig.getParameter<bool>("doPhotonTree");
   doSuperClusterTree = iConfig.getParameter<bool>("doSuperClusterTree");

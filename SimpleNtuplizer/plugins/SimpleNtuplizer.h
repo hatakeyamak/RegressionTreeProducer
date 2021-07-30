@@ -68,6 +68,7 @@
 #include "DataFormats/EcalDetId/interface/EBDetId.h"
 #include "DataFormats/EcalDetId/interface/EEDetId.h"
 #include "DataFormats/RecoCandidate/interface/RecoEcalCandidate.h"
+#include "RecoEcal/EgammaCoreTools/interface/EcalNextToDeadChannelRcd.h"
 
 #include <algorithm>
 #include <vector>
@@ -160,6 +161,8 @@ class SimpleNtuplizer : public edm::EDAnalyzer {
   edm::EDGetTokenT<EBSrFlagCollection> ebSrFlagToken_; 
   edm::EDGetTokenT<EESrFlagCollection> eeSrFlagToken_; 
 
+  edm::ESGetToken<EcalNextToDeadChannel, EcalNextToDeadChannelRcd> nextToDeadToken_;
+  
   // =====================================
   // Event variables
 

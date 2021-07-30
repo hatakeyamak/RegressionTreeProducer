@@ -21,7 +21,7 @@ config.Data.unitsPerJob                 = 100
 config.Site.storageSite                 = 'T2_CH_CERN'
 #config.Data.outLFNDirBase = '/store/group/phys_egamma/PFClusterCalibration/150_V0_2017/FlatTrees'
 #config.Data.outLFNDirBase = '/store/group/phys_egamma/PFClusterCalibration/150_V0_2017/FlatTrees/v1'
-config.Data.outLFNDirBase = '/store/group/phys_egamma/PFClusterCalibration/150_V2_2018/FlatTrees/'
+config.Data.outLFNDirBase = '/store/group/phys_egamma/PFClusterCalibration/150_V2_2016UL_SJ/FlatTrees/'
 
 if __name__ == '__main__':
 
@@ -32,10 +32,10 @@ if __name__ == '__main__':
         #'PFClusterPU0To10noPU' : '/DoublePhotonNoMaterial_FlatPt-0p01To10/shilpi-crab_DoublePhotonNoMaterial_FlatPt-0p0To10_noPU-9c112e244c41f1eee1e8bf19070f2b2a/USER'
 
 
-        #'PFClusterPU10To300' : '/DoublePhotonNoMaterial_FlatPt-10To300/shilpi-crab_DoublePhotonNoMaterial_FlatPt-10To300_0to70PU-0a223194161d9d3b2600316f360bd536/USER',
-        #'PFClusterPU0To10' : '/DoublePhotonNoMaterial_FlatPt-0p01To10/shilpi-crab_DoublePhotonNoMaterial_FlatPt-0p0To10_0to70PU-0a223194161d9d3b2600316f360bd536/USER',
-        #'PFCluster10To300noPU' : '/DoublePhotonNoMaterial_FlatPt-10To300/shilpi-crab_DoublePhotonNoMaterial_FlatPt-10To300_noPU-0a223194161d9d3b2600316f360bd536/USER',
-        'PFCluster0To10noPU' : '/DoublePhotonNoMaterial_FlatPt-0p01To10/shilpi-crab_DoublePhotonNoMaterial_FlatPt-0p0To10_noPU-0a223194161d9d3b2600316f360bd536/USER'
+        'PFClusterPU10To300' : '/DoublePhotonNoMaterial_FlatPt-10To300/shilpi-crab_DoublePhotonNoMaterial_FlatPt-10To300_0to70PU-ad6375b0703b017ba138c501a5e17ec8/USER',
+        'PFClusterPU0To10' : '/DoublePhotonNoMaterial_FlatPt-0p01To10/shilpi-crab_DoublePhotonNoMaterial_FlatPt-0p0To10_0to70PU-ad6375b0703b017ba138c501a5e17ec8/USER',
+        'PFCluster10To300noPU' : '/DoublePhotonNoMaterial_FlatPt-10To300/shilpi-crab_DoublePhotonNoMaterial_FlatPt-10To300_noPU-ad6375b0703b017ba138c501a5e17ec8/USER',
+        'PFCluster0To10noPU' : '/DoublePhotonNoMaterial_FlatPt-0p01To10/shilpi-crab_DoublePhotonNoMaterial_FlatPt-0p0To10_noPU-ad6375b0703b017ba138c501a5e17ec8/USER'
        
         }
 

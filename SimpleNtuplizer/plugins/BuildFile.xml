@@ -24,6 +24,7 @@
 <use name="Geometry/Records"/>
 <use name="PhysicsTools/HepMCCandAlgos"/>
 <use name="DataFormats/Math"/>
+<use name="Geometry/EcalMapping"/>
 <use name="vdt"/>
 <use name="root"/>
 
