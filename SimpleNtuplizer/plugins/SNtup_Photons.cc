@@ -362,11 +362,7 @@ void SimpleNtuplizer::setPhotonVariables(const reco::Photon& photon,
 
   // Now only for the seed 5x5
   hadronicOverEm_p = photon.hadronicOverEm();
-  hadronic1OverEm_p = photon.hadronicDepth1OverEm();
-  hadronic2OverEm_p = photon.hadronicDepth2OverEm();
-  hadronicOverEmBC_p = photon.hadTowDepth1OverEm() + photon.hadTowDepth2OverEm();
-  hadronic1OverEmBC_p = photon.hadTowDepth1OverEm();
-  hadronic2OverEmBC_p = photon.hadTowDepth2OverEm();
+  hadronicOverEmBC_p = photon.hadTowOverEm();
 
   corrEnergy74X_p       = photon.energyCorrections().regression2Energy;
   corrEnergy74XError_p  = photon.energyCorrections().regression2EnergyError;	

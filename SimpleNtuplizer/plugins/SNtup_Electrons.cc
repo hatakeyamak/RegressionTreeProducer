@@ -361,11 +361,7 @@ void SimpleNtuplizer::setElectronVariables(
 
   // Now only for the seed 5x5
   hadronicOverEm_e = electron.hadronicOverEm();
-  hadronic1OverEm_e = electron.hadronicOverEm1();
-  hadronic2OverEm_e = electron.hadronicOverEm2();
-  hadronicOverEmBC_e = electron.hcalDepth1OverEcalBc() + electron.hcalDepth2OverEcalBc();
-  hadronic1OverEmBC_e = electron.hcalDepth1OverEcalBc();
-  hadronic2OverEmBC_e = electron.hcalDepth2OverEcalBc();
+  hadronicOverEmBC_e = electron.hcalOverEcalBc();
 	
   corrEnergy74X_e = electron.corrections().correctedEcalEnergy;
   corrEnergy74XError_e = electron.corrections().correctedEcalEnergyError;
