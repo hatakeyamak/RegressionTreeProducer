@@ -2,11 +2,6 @@
 
 namespace {
   typedef reco::PFCluster::EEtoPSAssociation::value_type EEPSPair;
-  /*
-  bool sortByKey(const EEPSPair& a, const EEPSPair& b) {
-    return a.first < b.first;
-  }
-  */
 }
 
 void SimpleNtuplizer::setPFVariables(const edm::Event& iEvent,
@@ -72,19 +67,9 @@ void SimpleNtuplizer::setPFVariables(const edm::Event& iEvent,
   ///needed for reading the SR flag
   edm::ESHandle<EcalTrigTowerConstituentsMap> hTriggerTowerMap =
     iSetup.get<IdealGeometryRecord>().getHandle(eTTmapToken_);
-  /*
-  edm::ESHandle<EcalTrigTowerConstituentsMap> hTriggerTowerMap;
-  iSetup.get<IdealGeometryRecord>().get(hTriggerTowerMap);
-  */
   triggerTowerMap_ = hTriggerTowerMap.product();
-  // ESHandle<EcalElectronicsMapping> ecalmapping = iSetup.getHandle(ecalmappingToken_);
-  // triggerTowerMap_ = iSetup.getHandle(eTTmapToken_);
 
   //electronics map
-  /*
-  edm::ESHandle< EcalElectronicsMapping > ecalmapping;
-  iSetup.get< EcalMappingRcd >().get(ecalmapping);
-  */
   edm::ESHandle< EcalElectronicsMapping > ecalmapping =
     iSetup.get<EcalMappingRcd>().getHandle(ecalmappingToken_);
   elecMap_ = ecalmapping.product();
@@ -106,7 +91,6 @@ void SimpleNtuplizer::setPFVariables(const edm::Event& iEvent,
       ///corrected energy
       cluscorrE_pf = pfc.correctedEnergy();
 
-      //std::cout<<"corrected cluster energy "<<cluscorrE_pf<<std::endl;
       ///pt
       clusPt_pf = pfc.pt();
 
@@ -161,50 +145,15 @@ void SimpleNtuplizer::setPFVariables(const edm::Event& iEvent,
 
       auto clusterref = edm::Ref<reco::PFClusterCollection>(clustersH, iP++);
 
-      ///lazy tools
-      //EcalClusterLazyTools lazyTool(iEvent, iSetup, ecalRecHitEBToken_, ecalRecHitEEToken_);
-      //clusSize_pf = lazyTool.n5x5(pfc);
-
-      //std::cout<<""<<std::endl;
-      //std::cout<<" clusrawE "<<clusrawE_pf<<std::endl;
-      ///////PS energy
-      //compute preshower energies for endcap clusters
-      //double ePS1=0, ePS2=0;
       if(!iseb) {
-	/*
-	auto ee_key_val = std::make_pair(nClus_pf,edm::Ptr<reco::PFCluster>());
-	const auto clustops = std::equal_range(clusterpairH->begin(),
-					       clusterpairH->end(),
-					       ee_key_val,
-					       sortByKey);
-	for( auto i_ps = clustops.first; i_ps != clustops.second; ++i_ps) {
-	  edm::Ptr<reco::PFCluster> psclus(i_ps->second);
-
-	  switch( psclus->layer() ) {
-
-	  case PFLayer::PS1:
-	    ePS1 += psclus->energy();
-	    break;
-	  case PFLayer::PS2:
-	    ePS2 += psclus->energy();
-	    break;
-	  default:
-	    break;
-	  }
-	}//for( auto i_ps = clustops.first; i_ps !=..)
-	clusPS1_pf = ePS1;
-	clusPS2_pf = ePS2;
-	*/
 
 	clusPS1_pf = (*clusPS1)[clusterref];
 	clusPS2_pf = (*clusPS2)[clusterref];
 
-
-
       }//if(!iseb)
 
 
-       ////SR flags
+      ////SR flags
       if(iseb){
 
 	EBSrFlagCollection::const_iterator srf
@@ -212,7 +161,6 @@ void SimpleNtuplizer::setPFVariables(const edm::Event& iEvent,
 
 	clusFlag_pf = srf->value();
       }
-
 
       if(!iseb){
 	EESrFlagCollection::const_iterator srf
@@ -255,11 +203,6 @@ void SimpleNtuplizer::setPFVariables(const edm::Event& iEvent,
 
       nhits_pf = clusSize_pf;
 
-      ///commented on 19th may, 2019
-      /*if(clusSize_pf>=3)
-	nhits_pf = 3;
-      */
-
       nClus_pf++;
 
       pfTree_->Fill();
@@ -274,17 +217,6 @@ void SimpleNtuplizer::setPFVariables(const edm::Event& iEvent,
 
 
 }//void SimpleNtuplizer::setPFVariables
-
-///http://cmslxr.fnal.gov/source/Validation/EcalDigis/src/EcalSelectiveReadoutValidation.cc#0668
-/*
-  http://cmsdoxygen.web.cern.ch/cmsdoxygen/CMSSW_9_0_0/doc/html/de/d38/classEcalSrFlag.html
-  SRF_FORCED_MASK = 0x4
-  SRF_FULL = 3
-  SRF_SUPPRESS = 0
-  SRF_ZS1 = 1
-  SRF_ZS2 = 2
-*/
-
 
 EcalTrigTowerDetId SimpleNtuplizer::readOutUnitOf(const EBDetId& xtalId) const{
   return triggerTowerMap_->towerOf(xtalId);

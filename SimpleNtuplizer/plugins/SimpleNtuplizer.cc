@@ -2,7 +2,7 @@
 //
 // Package:    SimpleNtuplizer
 // Class:      SimpleNtuplizer
-// 
+//
 /**\class SimpleNtuplizer SimpleNtuplizer.cc SimpleNtuplizer/plugins/SimpleNtuplizer.cc
 
    Description: [one line class summary]
@@ -58,7 +58,7 @@ SimpleNtuplizer::SimpleNtuplizer(const edm::ParameterSet& iConfig):
   nextToDeadToken_ = esConsumes<EcalNextToDeadChannel, EcalNextToDeadChannelRcd>();
   eTTmapToken_ = esConsumes<EcalTrigTowerConstituentsMap, IdealGeometryRecord>();
   ecalmappingToken_ = esConsumes<EcalElectronicsMapping, EcalMappingRcd>();
-  
+
   doElectronTree = iConfig.getParameter<bool>("doElectronTree");
   doPhotonTree = iConfig.getParameter<bool>("doPhotonTree");
   doSuperClusterTree = iConfig.getParameter<bool>("doSuperClusterTree");
@@ -81,7 +81,7 @@ SimpleNtuplizer::SimpleNtuplizer(const edm::ParameterSet& iConfig):
   eventTree_->Branch("luminosityBlock", &luminosityBlock_);
   eventTree_->Branch("run", &run_);
   eventTree_->Branch("weight", &weight_);
-  eventTree_->Branch("trueNumInteractions", &trueNumInteractions_);	
+  eventTree_->Branch("trueNumInteractions", &trueNumInteractions_);
   if(doVertex) eventTree_->Branch("nPV", &nPV_);
   eventTree_->Branch("nElectrons", &nElectrons_);
   eventTree_->Branch("nElectronsMatched", &nElectronsMatched_);
@@ -215,7 +215,7 @@ SimpleNtuplizer::SimpleNtuplizer(const edm::ParameterSet& iConfig):
     electronTree_->Branch("gsfchi2", &gsfchi2_e);
     electronTree_->Branch("gsfndof", &gsfndof_e);
     electronTree_->Branch("gsfnhits", &gsfnhits_e);
-	
+
     electronTree_->Branch("genMatchdR", &genMatchdR_e);
     electronTree_->Branch("genMatchdE", &genMatchdE_e);
     electronTree_->Branch("genMatchdRdE", &genMatchdRdE_e);
@@ -462,7 +462,7 @@ SimpleNtuplizer::SimpleNtuplizer(const edm::ParameterSet& iConfig):
     photonTree_->Branch("corrEnergy74X", &corrEnergy74X_p);
     photonTree_->Branch("corrEnergy74XError", &corrEnergy74XError_p);
 
-    photonTree_->Branch("isConverted", &isConverted_p); 
+    photonTree_->Branch("isConverted", &isConverted_p);
 
     photonTree_->Branch("genMatchdR", &genMatchdR_p);
     photonTree_->Branch("genMatchdE", &genMatchdE_p);
@@ -488,7 +488,7 @@ SimpleNtuplizer::SimpleNtuplizer(const edm::ParameterSet& iConfig):
 
     pfTree_    = fs->make<TTree>("PfTree", "PF Cluster tree");
 
-    pfTree_->Branch("nClus",           &nClus_pf);    
+    pfTree_->Branch("nClus",           &nClus_pf);
     pfTree_->Branch("clusrawE",        &clusrawE_pf);
     pfTree_->Branch("cluscorrE",       &cluscorrE_pf);
     pfTree_->Branch("clusPt",          &clusPt_pf);
@@ -531,7 +531,7 @@ SimpleNtuplizer::SimpleNtuplizer(const edm::ParameterSet& iConfig):
 // analyze - The method that is executed on every event
 
 void SimpleNtuplizer::analyze( const edm::Event& iEvent, const edm::EventSetup& iSetup ){
-    
+
   using namespace std;
   using namespace edm;
   using namespace reco;
@@ -554,14 +554,14 @@ void SimpleNtuplizer::analyze( const edm::Event& iEvent, const edm::EventSetup& 
   if (doPhotonTree)
     iEvent.getByToken(photonToken_, photons);
 
-  // Get clusters  
-  edm::Handle<reco::SuperClusterCollection> superClustersEB;    
-  edm::Handle<reco::SuperClusterCollection> superClustersEE;    
+  // Get clusters
+  edm::Handle<reco::SuperClusterCollection> superClustersEB;
+  edm::Handle<reco::SuperClusterCollection> superClustersEE;
   if (doSuperClusterTree) {
     iEvent.getByToken( superClustersEBToken_, superClustersEB);
     iEvent.getByToken( superClustersEEToken_, superClustersEE);
   }
-  
+
   if (doElectronTree || doPhotonTree || doSuperClusterTree) {
     iEvent.getByToken( ecalRecHitEBToken_, ecalRecHitsEB_ );
     iEvent.getByToken( ecalRecHitEEToken_, ecalRecHitsEE_ );
@@ -570,18 +570,8 @@ void SimpleNtuplizer::analyze( const edm::Event& iEvent, const edm::EventSetup& 
   if (!isData) {
     iEvent.getByToken( genParticleToken_, genParticles_ );
     iEvent.getByToken( PUInfoToken_,      puInfoH_ );
-    iEvent.getByToken( genEvtInfoToken_,  genEvtInfo_ );      
+    iEvent.getByToken( genEvtInfoToken_,  genEvtInfo_ );
   }
-
-  /*
-  edm::ESHandle<CaloGeometry> pGeometry;
-  iSetup.get<CaloGeometryRecord>().get(pGeometry);
-  geometry_ = pGeometry.product();
-    
-  edm::ESHandle<CaloTopology> pTopology;
-  iSetup.get<CaloTopologyRecord>().get(pTopology);
-  topology_ = pTopology.product();
-  */
 
   //######################################
   //# Event specific quantities (not used in regression)
@@ -604,7 +594,7 @@ void SimpleNtuplizer::analyze( const edm::Event& iEvent, const edm::EventSetup& 
       }
     }
   }
-  
+
   // Determine number of primary vertices
   if(doVertex){
     if (vertices->empty()) nPV_ = 0;
@@ -613,7 +603,7 @@ void SimpleNtuplizer::analyze( const edm::Event& iEvent, const edm::EventSetup& 
 
   //######################################
   //# Analyze electrons and photons
-  //######################################    
+  //######################################
 
   // Loop over electrons
 
@@ -624,9 +614,9 @@ void SimpleNtuplizer::analyze( const edm::Event& iEvent, const edm::EventSetup& 
     luminosityBlock_e = iEvent.id().luminosityBlock();
     run_e             = iEvent.id().run();
     for (const auto &electron : *electrons) {
-      if (doTagAndProbe) 
+      if (doTagAndProbe)
 	if (!findTag(electron, iEvent, iSetup)) return;
-      setElectronVariables(electron, iEvent, iSetup);	
+      setElectronVariables(electron, iEvent, iSetup);
     }
   }
 
@@ -639,7 +629,7 @@ void SimpleNtuplizer::analyze( const edm::Event& iEvent, const edm::EventSetup& 
     run_p             = iEvent.id().run();
 
     for (const auto &photon : *photons) {
-      if (doTagAndProbe) 
+      if (doTagAndProbe)
 	if (!findTag(photon, iEvent, iSetup)) return;
       setPhotonVariables( photon, iEvent, iSetup );
     }
@@ -665,14 +655,14 @@ void SimpleNtuplizer::analyze( const edm::Event& iEvent, const edm::EventSetup& 
       setSuperClusterVariables( superCluster, iEvent, iSetup, false );
     }
   }
-    
+
 
   ///doPFTree
   if(doPFTree){
     setPFVariables(iEvent, iSetup );
   }
 
-  
+
   // Fill in the event specific variables
   eventTree_->Fill();
 
@@ -694,4 +684,3 @@ void SimpleNtuplizer::endJob() {
 
 //define this as a plug-in
 DEFINE_FWK_MODULE(SimpleNtuplizer);
-

@@ -26,9 +26,10 @@ process.options = cms.untracked.PSet( allowUnscheduled = cms.untracked.bool(True
 readFiles = cms.untracked.vstring()
 secFiles = cms.untracked.vstring() 
 
-file_input_list = open('list_input_files.txt', 'r')
+#file_input_list = open('list_input_files_using_my_db.txt', 'r')
+file_input_list = open('list_input_files1.txt', 'r')
 lines_input_files = file_input_list.readlines()
-
+#
 process.source = cms.Source(
     "PoolSource",
     fileNames = cms.untracked.vstring(
@@ -36,14 +37,29 @@ process.source = cms.Source(
     )
 )
 
+readFiles.extend([
+	#'/store/mc/Run3Summer21MiniAOD/DoublePhotonNoMaterial_FlatPt-0p01To10/MINIAODSIM/NoPUExt21ZM_Ext21ZM_NoMaterial_120X_mcRun3_2021_realistic_v5-v3/260000/14240a35-21a5-4cee-90be-23799fc683a0.root'
+    #'/store/mc/Run3Summer21MiniAOD/DoublePhotonNoMaterial_FlatPt-10To500/MINIAODSIM/NoPUExt21ZM_Ext21ZM_NoMaterial_120X_mcRun3_2021_realistic_v5-v3/260000/0ad173a1-3df6-48bd-bb26-0ca5cdce98a9.root'
+	#'/store/mc/Run3Summer21MiniAOD/DoublePhotonNoMaterial_FlatPt-500To1000/MINIAODSIM/NoPUExt21ZM_Ext21ZM_NoMaterial_120X_mcRun3_2021_realistic_v5-v3/260000/25ad529d-97c8-4703-a4c3-ce36d401bf52.root'
+	#'/store/mc/Run3Summer21MiniAOD/DoublePhotonNoMaterial_FlatPt-1000To1500/MINIAODSIM/NoPUExt21ZM_Ext21ZM_NoMaterial_120X_mcRun3_2021_realistic_v5-v3/260000/01984c89-d7c4-400d-96cb-0910926f58db.root'
+])
+
+#process.source = cms.Source(
+#    "PoolSource",
+#	fileNames = readFiles,
+#    secondaryFileNames = secFiles
+#)
+#
 ########################################
 # Define the analyzer
 ########################################
 
 process.TFileService = cms.Service("TFileService",
-                                   fileName = cms.string("/eos/cms/store/group/phys_pf/Run3PreparationSamples/EGMRegession/DoublePhotonNoMaterialNoPU/tree/tree_orig.root"),
-                                   closeFileFast = cms.untracked.bool(True)
-                                   )
+								   #fileName = cms.string("/eos/cms/store/group/phys_pf/Run3PreparationSamples/EGMRegession/DoublePhotonNoMaterialNoPU/tree/tree.root"),
+                                   #fileName = cms.string("tree_noPU_using_my_db.root"),
+                                   fileName = cms.string("tree_noPU1.root"),
+								   closeFileFast = cms.untracked.bool(True)
+)
 
 
 process.een_analyzer = cms.EDAnalyzer(
