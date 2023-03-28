@@ -94,13 +94,13 @@ class SimpleNtuplizer : public edm::EDAnalyzer {
   void setPFVariables(const edm::Event& iEvent, const edm::EventSetup& iSetup);
   EcalTrigTowerDetId readOutUnitOf(const EBDetId& xtalId) const;
   EcalScDetId readOutUnitOf(const EEDetId& xtalId) const;
-  
+
   bool matchElectronToGenParticle       (const reco::GsfElectron&);
   bool matchPhotonToGenParticle         (const reco::Photon&);
   bool matchSuperClusterToGenParticle   (const reco::SuperCluster&);
 
   bool findTag(const reco::RecoCandidate& object, const edm::Event& iEvent, const edm::EventSetup& iSetup);
-	
+
  private:
   virtual void beginJob() override;
   virtual void analyze(const edm::Event&, const edm::EventSetup&) override;
@@ -116,28 +116,27 @@ class SimpleNtuplizer : public edm::EDAnalyzer {
   bool isData;
 
   //typedef std::vector<std::pair<unsigned long,edm::Ptr<reco::PFCluster> > > EEtoPSAssociation;
-  
+
   // =====================================
   // Setting tokens
-        
+
   edm::EDGetTokenT<reco::VertexCollection>            vtxToken_;
   edm::EDGetTokenT<reco::GenParticleCollection>       genParticleToken_;
-  edm::EDGetTokenT<double>                            rhoToken_; 
+  edm::EDGetTokenT<double>                            rhoToken_;
   edm::EDGetTokenT<std::vector<PileupSummaryInfo> >   PUInfoToken_;
   edm::EDGetTokenT<GenEventInfoProduct>               genEvtInfoToken_;
 
-  edm::EDGetTokenT<reco::GsfElectronCollection>       electronToken_; 
+  edm::EDGetTokenT<reco::GsfElectronCollection>       electronToken_;
   edm::EDGetTokenT<reco::PhotonCollection>            photonToken_;
   edm::EDGetTokenT<reco::SuperClusterCollection>      superClustersEBToken_;
   edm::EDGetTokenT<reco::SuperClusterCollection>      superClustersEEToken_;
   edm::EDGetTokenT<edm::SortedCollection<EcalRecHit>> ecalRecHitEBToken_;
   edm::EDGetTokenT<edm::SortedCollection<EcalRecHit>> ecalRecHitEEToken_;
 
-
   //required for reading SR flags
   const EcalTrigTowerConstituentsMap * triggerTowerMap_;
   const EcalElectronicsMapping* elecMap_;
-  
+
   const CaloTopology *topology_;
   const CaloGeometry *geometry_;
 
@@ -149,7 +148,7 @@ class SimpleNtuplizer : public edm::EDAnalyzer {
   edm::Handle<edm::SortedCollection<EcalRecHit>> ecalRecHitsEE_;
   edm::Handle<std::vector<PileupSummaryInfo> >   puInfoH_;
   edm::Handle<GenEventInfoProduct>               genEvtInfo_;
-	       
+
   edm::EDGetTokenT<reco::PFClusterCollection> pfLabel_;
   edm::EDGetTokenT<reco::PFCluster::EEtoPSAssociation> pspfLabel_;
   edm::EDGetTokenT<edm::ValueMap<reco::GenParticleRef> > genpfLabel_;
@@ -158,11 +157,14 @@ class SimpleNtuplizer : public edm::EDAnalyzer {
   edm::EDGetTokenT<edm::ValueMap<float> > ps1Label_;
   edm::EDGetTokenT<edm::ValueMap<float> > ps2Label_;
 
-  edm::EDGetTokenT<EBSrFlagCollection> ebSrFlagToken_; 
-  edm::EDGetTokenT<EESrFlagCollection> eeSrFlagToken_; 
+  edm::EDGetTokenT<EBSrFlagCollection> ebSrFlagToken_;
+  edm::EDGetTokenT<EESrFlagCollection> eeSrFlagToken_;
 
   edm::ESGetToken<EcalNextToDeadChannel, EcalNextToDeadChannelRcd> nextToDeadToken_;
-  
+
+  edm::ESGetToken<EcalTrigTowerConstituentsMap, IdealGeometryRecord> eTTmapToken_;
+  edm::ESGetToken<EcalElectronicsMapping, EcalMappingRcd> ecalmappingToken_;
+
   // =====================================
   // Event variables
 
@@ -182,7 +184,7 @@ class SimpleNtuplizer : public edm::EDAnalyzer {
   Float_t trueNumInteractions_;
 
 
-  
+
   Int_t nPV_;
   Int_t nElectrons_;
   Int_t nElectronsMatched_;
@@ -300,7 +302,7 @@ class SimpleNtuplizer : public edm::EDAnalyzer {
   std::vector<Float_t> full5x5_e2x5Top_e;
   std::vector<Float_t> full5x5_e2x5Bottom_e;
   // H/E
-  
+
   // Now only for the seed 5x5
   Float_t hadronicOverEm_e;
   Float_t hadronic1OverEm_e;
@@ -333,7 +335,7 @@ class SimpleNtuplizer : public edm::EDAnalyzer {
   Float_t gsfchi2_e;
   Float_t gsfndof_e;
   Float_t gsfnhits_e;
-	
+
   Float_t genMatchdR_e;
   Float_t genMatchdE_e;
   Float_t genMatchdRdE_e;
@@ -599,7 +601,7 @@ class SimpleNtuplizer : public edm::EDAnalyzer {
   Float_t corrEnergy74X_p;
   Float_t corrEnergy74XError_p;
 
-  Int_t isConverted_p; 
+  Int_t isConverted_p;
 
   Float_t genMatchdR_p;
   Float_t genMatchdE_p;
@@ -615,7 +617,7 @@ class SimpleNtuplizer : public edm::EDAnalyzer {
 
   /////////////////////////
   // PF cluster tree
-  // 
+  //
   Float_t    rho_pf;
   Int_t      nClus_pf;
   Float_t    clusrawE_pf;
@@ -645,12 +647,12 @@ class SimpleNtuplizer : public edm::EDAnalyzer {
   Float_t nlgtgtvar_pf;
 
   //////////////////////////
-  // Tag and Probe  
+  // Tag and Probe
   //
   Float_t tp_mll;
   Float_t tp_ptll;
   Float_t tp_tagpt;
   Float_t tp_tageta;
   Float_t tp_tagphi;
-		
+
 };

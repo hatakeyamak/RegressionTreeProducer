@@ -55,9 +55,10 @@ SimpleNtuplizer::SimpleNtuplizer(const edm::ParameterSet& iConfig):
   eeSrFlagToken_(consumes<EESrFlagCollection>(iConfig.getParameter<edm::InputTag>("eeSrFlagCollection")))
 {
 
-    nextToDeadToken_ = esConsumes<EcalNextToDeadChannel, EcalNextToDeadChannelRcd>();
-    
-
+  nextToDeadToken_ = esConsumes<EcalNextToDeadChannel, EcalNextToDeadChannelRcd>();
+  eTTmapToken_ = esConsumes<EcalTrigTowerConstituentsMap, IdealGeometryRecord>();
+  ecalmappingToken_ = esConsumes<EcalElectronicsMapping, EcalMappingRcd>();
+  
   doElectronTree = iConfig.getParameter<bool>("doElectronTree");
   doPhotonTree = iConfig.getParameter<bool>("doPhotonTree");
   doSuperClusterTree = iConfig.getParameter<bool>("doSuperClusterTree");
@@ -88,10 +89,6 @@ SimpleNtuplizer::SimpleNtuplizer(const edm::ParameterSet& iConfig):
   eventTree_->Branch("nPhotonsMatched", &nPhotonsMatched_);
   eventTree_->Branch("nClusters", &nClusters_);
   eventTree_->Branch("nClustersMatched", &nClustersMatched_);
-
-
-
-
 
   if (doElectronTree) {
     electronTree_ = fs->make<TTree> ("ElectronTree", "Electron data");
@@ -576,6 +573,7 @@ void SimpleNtuplizer::analyze( const edm::Event& iEvent, const edm::EventSetup& 
     iEvent.getByToken( genEvtInfoToken_,  genEvtInfo_ );      
   }
 
+  /*
   edm::ESHandle<CaloGeometry> pGeometry;
   iSetup.get<CaloGeometryRecord>().get(pGeometry);
   geometry_ = pGeometry.product();
@@ -583,8 +581,7 @@ void SimpleNtuplizer::analyze( const edm::Event& iEvent, const edm::EventSetup& 
   edm::ESHandle<CaloTopology> pTopology;
   iSetup.get<CaloTopologyRecord>().get(pTopology);
   topology_ = pTopology.product();
-
-
+  */
 
   //######################################
   //# Event specific quantities (not used in regression)
