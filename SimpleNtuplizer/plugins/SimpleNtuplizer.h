@@ -11,7 +11,7 @@
 #include <typeinfo>
 
 // user include files
-#include "FWCore/Framework/interface/EDAnalyzer.h"
+#include "FWCore/Framework/interface/one/EDAnalyzer.h"
 #include "FWCore/Framework/interface/Event.h"
 #include "FWCore/Framework/interface/MakerMacros.h"
 #include "FWCore/Framework/interface/ESHandle.h"
@@ -82,7 +82,7 @@ void setbit(UShort_t& x, UShort_t bit);
 //# Class declaration
 //######################################
 
-class SimpleNtuplizer : public edm::EDAnalyzer {
+class SimpleNtuplizer : public edm::one::EDAnalyzer<> {
 
  public:
   explicit SimpleNtuplizer(const edm::ParameterSet&);
