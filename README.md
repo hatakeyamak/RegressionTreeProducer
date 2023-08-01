@@ -9,6 +9,7 @@ cmsenv
 git clone https://github.com/hatakeyamak/RegressionTreeProducer.git -b PFTree_12_6_X
 scram b -j8
 ```
+See: https://codimd.web.cern.ch/IwKw1T6VQw6Q8mHpvK3Mzw?view for further details.
 
 ======= Steps for Run 3 V0 - for 2022 operation ===================
 ```
