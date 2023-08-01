@@ -115,8 +115,6 @@ class SimpleNtuplizer : public edm::one::EDAnalyzer<> {
   bool doTagAndProbe;
   bool isData;
 
-  //typedef std::vector<std::pair<unsigned long,edm::Ptr<reco::PFCluster> > > EEtoPSAssociation;
-
   // =====================================
   // Setting tokens
 

@@ -178,7 +178,6 @@ void SimpleNtuplizer::setPFVariables(const edm::Event& iEvent,
       genPhi_pf = genpart->phi();
 
 
-      ///OLD - https://github.com/cms-sw/cmssw/blob/CMSSW_7_4_X/DataFormats/HepMCCandidate/interface/GenParticle.h#L86
       ////https://github.com/cms-sw/cmssw/blob/CMSSW_9_1_X/DataFormats/HepMCCandidate/interface/GenParticle.h#L65-L103
       UShort_t tmpStatusFlag = 0;
       if (genpart->fromHardProcessFinalState()) setbit(tmpStatusFlag, 0);
@@ -212,7 +211,7 @@ void SimpleNtuplizer::setPFVariables(const edm::Event& iEvent,
 
   }//if (clustersH.isValid())
   else{
-    cout<<"Handle now found!!!"<<endl;
+    cout<<"Handle not found!!!"<<endl;
   }
 
 

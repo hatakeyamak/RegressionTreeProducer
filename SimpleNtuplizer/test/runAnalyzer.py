@@ -39,9 +39,6 @@ process.source = cms.Source(
 
 readFiles.extend([
 	#'/store/mc/Run3Summer21MiniAOD/DoublePhotonNoMaterial_FlatPt-0p01To10/MINIAODSIM/NoPUExt21ZM_Ext21ZM_NoMaterial_120X_mcRun3_2021_realistic_v5-v3/260000/14240a35-21a5-4cee-90be-23799fc683a0.root'
-    #'/store/mc/Run3Summer21MiniAOD/DoublePhotonNoMaterial_FlatPt-10To500/MINIAODSIM/NoPUExt21ZM_Ext21ZM_NoMaterial_120X_mcRun3_2021_realistic_v5-v3/260000/0ad173a1-3df6-48bd-bb26-0ca5cdce98a9.root'
-	#'/store/mc/Run3Summer21MiniAOD/DoublePhotonNoMaterial_FlatPt-500To1000/MINIAODSIM/NoPUExt21ZM_Ext21ZM_NoMaterial_120X_mcRun3_2021_realistic_v5-v3/260000/25ad529d-97c8-4703-a4c3-ce36d401bf52.root'
-	#'/store/mc/Run3Summer21MiniAOD/DoublePhotonNoMaterial_FlatPt-1000To1500/MINIAODSIM/NoPUExt21ZM_Ext21ZM_NoMaterial_120X_mcRun3_2021_realistic_v5-v3/260000/01984c89-d7c4-400d-96cb-0910926f58db.root'
 ])
 
 #process.source = cms.Source(
@@ -55,10 +52,8 @@ readFiles.extend([
 ########################################
 
 process.TFileService = cms.Service("TFileService",
-								   #fileName = cms.string("/eos/cms/store/group/phys_pf/Run3PreparationSamples/EGMRegession/DoublePhotonNoMaterialNoPU/tree/tree.root"),
-                                   #fileName = cms.string("tree_noPU_using_my_db.root"),
-                                   fileName = cms.string("tree_noPU1.root"),
-								   closeFileFast = cms.untracked.bool(True)
+                                   fileName = cms.string("tree_noPU.root"),
+				   closeFileFast = cms.untracked.bool(True)
 )
 
 
@@ -107,5 +102,4 @@ process.particleFlowClusterECALMatchedToPhotons.recHitsEELabel = cms.InputTag("r
 
 
 process.p = cms.Path(process.particleFlowClusterECALMatchedToPhotons * process.een_analyzer)
-#process.p = cms.Path(process.particleFlowClusterECALMatchedToPhotons)
 #process.output_step = cms.EndPath(process.out)

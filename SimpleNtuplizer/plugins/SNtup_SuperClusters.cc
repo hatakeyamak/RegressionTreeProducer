@@ -60,8 +60,6 @@ void SimpleNtuplizer::setSuperClusterVariables(
   seedEnergy_c = superCluster.seed()->energy();
   numberOfClusters_c = superCluster.clusters().size();
 
-  //EcalClusterLocal ecalLocal;    
-
   clusterRawEnergy_c.clear();
   clusterPhi_c.clear();
   clusterEta_c.clear();

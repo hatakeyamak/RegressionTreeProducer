@@ -68,8 +68,6 @@ void SimpleNtuplizer::setPhotonVariables(const reco::Photon& photon,
   seedEnergy_p = superCluster.seed()->energy();
   numberOfClusters_p = superCluster.clusters().size();
 
-  //EcalClusterLocal ecalLocal;    
-
   clusterRawEnergy_p.clear();
   clusterPhi_p.clear();
   clusterEta_p.clear();
@@ -205,7 +203,6 @@ void SimpleNtuplizer::setPhotonVariables(const reco::Photon& photon,
   }
 
   // Showershape
-  //std::vector<float> localCovariances = EcalClusterToolsT<false>::localCovariances(cluster, ecalRecHits.product(), topology_);
   const auto& localCovariances = EcalClusterToolsT<false>::localCovariances(cluster, ecalRecHits.product(), topology_);
 									    
   r9_p.push_back(EcalClusterToolsT<false>::e3x3(cluster, ecalRecHits.product(), topology_)/superCluster.rawEnergy());

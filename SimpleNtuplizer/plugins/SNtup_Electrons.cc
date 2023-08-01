@@ -68,8 +68,6 @@ void SimpleNtuplizer::setElectronVariables(
   seedEnergy_e = superCluster.seed()->energy();
   numberOfClusters_e = superCluster.clusters().size();
 
-  //EcalClusterLocal ecalLocal;    
-
   clusterRawEnergy_e.clear();
   clusterPhi_e.clear();
   clusterEta_e.clear();
